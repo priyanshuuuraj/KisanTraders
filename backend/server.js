@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8000;
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://kisan-traders-frontend.vercel.app", // ← your actual frontend URL
+    "https://kisan-traders-frontend.vercel.app",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
