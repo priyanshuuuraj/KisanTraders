@@ -1,16 +1,77 @@
-# React + Vite
+🌐 Full Stack MERN Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Full Stack Web Application built using the MERN stack.
 
-Currently, two official plugins are available:
+🚀 Tech Stack
+Frontend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React
 
-## React Compiler
+Vite
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tailwind CSS
 
-## Expanding the ESLint configuration
+Redux
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Backend
+
+Node.js
+
+Express.js
+
+MongoDB
+
+Mongoose
+
+📂 Project Structure
+project
+│
+├── frontend
+│   ├── src
+│   ├── components
+│   └── pages
+│
+├── backend
+│   ├── controllers
+│   ├── models
+│   ├── routes
+│   └── server.js
+⚙️ Installation
+1️⃣ Clone the repository
+git clone https://github.com/your-username/project-name.git
+2️⃣ Install backend dependencies
+cd backend
+npm install
+3️⃣ Install frontend dependencies
+cd ../frontend
+npm install
+▶️ Run the Project
+Start Backend
+cd backend
+npm run dev
+Start Frontend
+cd frontend
+npm run dev
+🔐 Environment Variables
+
+Create a .env file in the backend folder:
+
+PORT=8000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+CLOUDINARY_API_KEY=your_key
+✨ Features
+
+User Authentication
+
+Add to Cart
+
+Product Management
+
+Profile Update
+
+Secure API
+
+👩‍💻 Author
+
+Priyanshu Raj
