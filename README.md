@@ -1,4 +1,4 @@
-# 🌐 Full Stack MERN Web Application
+# 🌐 Kisan Traders : Full Stack MERN Web Application
 
 A Full Stack Web Application built using the **MERN Stack** (MongoDB, Express, React, Node.js).
 This project includes **user authentication, product management, and modern UI** with secure backend APIs.
