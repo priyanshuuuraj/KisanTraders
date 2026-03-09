@@ -195,7 +195,7 @@ Contributions are welcome.
 **Priyanshu Raj**
 
 GitHub:
-https://github.com/your-username
+https://github.com/priyanshuuuraj
 
 ---
 
