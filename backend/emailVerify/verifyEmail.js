@@ -11,7 +11,7 @@ export const verifyEmail = async (token, email) => {
         }
     });
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://kisantraders.onrender.com';
 
     const mailConfigurations = {
         from: `"KisanTraders" <${process.env.MAIL_USER}>`,

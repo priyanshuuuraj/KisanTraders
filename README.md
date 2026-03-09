@@ -129,7 +129,7 @@ npm run dev
 Frontend will run on:
 
 ```
-http://localhost:5173
+https://kisantraders.onrender.com
 ```
 
 ---
