@@ -1,77 +1,204 @@
-🌐 Full Stack MERN Project
+# 🌐 Full Stack MERN Web Application
 
-This is a Full Stack Web Application built using the MERN stack.
+A Full Stack Web Application built using the **MERN Stack** (MongoDB, Express, React, Node.js).
+This project includes **user authentication, product management, and modern UI** with secure backend APIs.
 
-🚀 Tech Stack
-Frontend
+---
 
-React
+# 🚀 Tech Stack
 
-Vite
+## Frontend
 
-Tailwind CSS
+* React
+* Vite
+* Tailwind CSS
+* Redux Toolkit
+* Axios
 
-Redux
+## Backend
 
-Backend
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
+* Cloudinary (for image upload)
 
-Node.js
+---
 
-Express.js
+# 📂 Project Structure
 
-MongoDB
-
-Mongoose
-
-📂 Project Structure
-project
+```
+project-root
 │
 ├── frontend
+│   ├── public
 │   ├── src
-│   ├── components
-│   └── pages
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── redux
+│   │   └── App.jsx
+│   │
+│   └── package.json
 │
 ├── backend
 │   ├── controllers
 │   ├── models
 │   ├── routes
+│   ├── middleware
+│   ├── database
+│   ├── utils
 │   └── server.js
-⚙️ Installation
-1️⃣ Clone the repository
-git clone https://github.com/your-username/project-name.git
-2️⃣ Install backend dependencies
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Installation
+
+## 1️⃣ Clone the Repository
+
+```
+git clone https://github.com/priyanshuuuraj/KisanTraders.git
+```
+
+```
+cd KisanTraders
+```
+
+---
+
+# 📦 Install Dependencies
+
+## Backend
+
+```
 cd backend
 npm install
-3️⃣ Install frontend dependencies
-cd ../frontend
+```
+
+## Frontend
+
+```
+cd frontend
 npm install
-▶️ Run the Project
-Start Backend
+```
+
+---
+
+# 🔐 Environment Variables
+
+Create a `.env` file in the **backend folder**.
+
+```
+PORT=****
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+---
+
+# ▶️ Running the Project
+
+## Start Backend Server
+
+```
 cd backend
 npm run dev
-Start Frontend
+```
+
+Backend will run on:
+
+```
+http://localhost:8000
+```
+
+---
+
+## Start Frontend
+
+```
 cd frontend
 npm run dev
-🔐 Environment Variables
+```
 
-Create a .env file in the backend folder:
+Frontend will run on:
 
-PORT=8000
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret_key
-CLOUDINARY_API_KEY=your_key
-✨ Features
+```
+http://localhost:5173
+```
 
-User Authentication
+---
 
-Add to Cart
+# ✨ Features
 
-Product Management
+* User Authentication (Signup / Login)
+* Secure JWT Authentication
+* Product Listing
+* Add to Cart
+* Profile Update
+* Image Upload with Cloudinary
+* Responsive UI
+* REST API Integration
 
-Profile Update
+---
 
-Secure API
+# 🛠 API Endpoints
 
-👩‍💻 Author
+## User
 
-Priyanshu Raj
+```
+POST /api/v1/user/register
+POST /api/v1/user/login
+PUT  /api/v1/user/update/:id
+```
+
+## Products
+
+```
+GET    /api/v1/products
+POST   /api/v1/products
+DELETE /api/v1/products/:id
+```
+
+---
+
+# 📸 Screenshots
+
+You can add screenshots of your project here.
+
+```
+![Home Page](screenshots/home.png)
+![Product Page](screenshots/product.png)
+```
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a new branch
+3. Commit your changes
+4. Push to your branch
+5. Create a Pull Request
+
+---
+
+# 👩‍💻 Author
+
+**Priyanshu Raj**
+
+GitHub:
+https://github.com/your-username
+
+---
+
+# ⭐ Support
+
+If you like this project, please ⭐ the repository.
