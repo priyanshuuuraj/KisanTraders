@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "http://localhost:5173",
+     "http://localhost:5174",
     "https://kisan-traders-frontend.vercel.app",
   ],
   credentials: true,
@@ -25,8 +26,11 @@ app.use("/api/v1/product", productRoute);
 app.use("/api/v1/cart", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 
-// Connect DB
 connectDB();
 
-// ✅ Export for Vercel instead of app.listen
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
 export default app;
