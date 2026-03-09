@@ -4,10 +4,12 @@ import 'dotenv/config'
 export const verifyEmail = async (token, email) => {
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
         auth: {
             user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS  // ← must be Google App Password
+            pass: process.env.MAIL_PASS
         }
     });
 
