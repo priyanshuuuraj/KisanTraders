@@ -1,3 +1,6 @@
+import dns from 'dns'
+dns.setDefaultResultOrder('ipv4first') // Fix ENETUNREACH IPv6 issue on Render
+
 import express from "express";
 import "dotenv/config";
 import connectDB from "./database/db.js";
@@ -13,7 +16,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin:"https://kisantraders.onrender.com",
+  origin: "https://kisantraders.onrender.com",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
@@ -26,15 +29,13 @@ app.use("/api/v1/cart", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 
 app.use(express.static(path.join(_dirname, "/frontend/dist")))
-// app.get("*", (_, res)=> {
-//   res.sendFile(path.resolve(_dirname, "frontend","dist", "index.html"))
-// })
+app.get("/{*path}", (_, res) => {
+  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
+})
 
 connectDB();
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
 
 export default app;
