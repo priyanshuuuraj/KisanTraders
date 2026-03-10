@@ -1,14 +1,20 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import 'dotenv/config'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+})
 
 export const verifyEmail = async (token, email) => {
   const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'KisanTraders <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `KisanTraders <${process.env.MAIL_USER}>`,
       to: email,
       subject: 'Verify Your Email - KisanTraders',
       html: `
@@ -28,16 +34,11 @@ export const verifyEmail = async (token, email) => {
       `
     })
 
-    if (error) {
-      console.error('❌ Email failed:', error)
-      return null // Don't crash registration
-    }
-
-    console.log('✅ Verification email sent to:', email, data)
-    return data
+    console.log('✅ Verification email sent to:', email)
+    return { messageId: 'sent' }
 
   } catch (err) {
     console.error('❌ Email failed:', err.message)
-    return null // Don't crash registration
+    return null
   }
 }
