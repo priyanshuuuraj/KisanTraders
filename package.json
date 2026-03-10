@@ -5,10 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon backend/server.js",
-    "build": "npm install && npm install --prefix ./frontend && npm run build --prefix ./frontend",
-    "start": "nodemon backend/server.js"
-    
+    "build": "npm install && cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/server.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +23,7 @@
     "multer": "^2.1.0",
     "nodemailer": "^8.0.1",
     "nodemon": "^3.1.14",
-    "razorpay": "^2.9.6"
+    "razorpay": "^2.9.6",
+    "resend": "^3.0.0"
   }
 }
