@@ -1,9 +1,6 @@
 export const verifyEmail = async (token, email) => {
-  // ✅ use FRONTEND_URL instead of VITE_URL
   const frontendUrl = process.env.FRONTEND_URL || 'https://kisantraders.onrender.com'
-  const verifyLink = `${frontendUrl}/verify?token=${token}`
-
-  console.log('🔗 Verify link:', verifyLink) // ← add this to confirm
+const verifyLink = `${frontendUrl}/verify/${token}`  
 
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -28,6 +25,8 @@ export const verifyEmail = async (token, email) => {
               <p style="color:#555;line-height:1.6;">Thanks for registering! Click below to activate your account.</p>
               <div style="text-align:center;margin:32px 0;">
                 <a href="${verifyLink}"
+                  rel="noopener noreferrer notrack"
+                  target="_blank"
                   style="background:linear-gradient(135deg,#2d4a2e,#3d6b40);color:white;
                          padding:14px 32px;border-radius:8px;text-decoration:none;
                          font-weight:bold;font-size:16px;display:inline-block;">
@@ -35,8 +34,10 @@ export const verifyEmail = async (token, email) => {
                 </a>
               </div>
               <p style="color:#888;font-size:13px;text-align:center;">
-                Or copy this link:<br/>
-                <a href="${verifyLink}" style="color:#5c3d1e;word-break:break-all;">${verifyLink}</a>
+                ⚠️ If the button doesn't work, copy and paste this link in your browser:
+              </p>
+              <p style="font-size:12px;text-align:center;word-break:break-all;">
+                <a href="${verifyLink}" style="color:#5c3d1e;">${verifyLink}</a>
               </p>
               <p style="color:#aaa;font-size:12px;text-align:center;margin-top:24px;">
                 ⏳ Expires in <strong>1 day</strong>. If you didn't register, ignore this.

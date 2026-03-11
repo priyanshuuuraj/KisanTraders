@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CheckCircle2, XCircle, Loader2, Wrench } from 'lucide-react'
 
 const VerifyEmail = () => {
+  const { token } = useParams()
   const navigate = useNavigate()
   const [status, setStatus] = useState("verifying")
 
   useEffect(() => {
-    // ✅ get raw token directly from URL without any decoding
-    const urlParams = new URLSearchParams(window.location.search)
-    const rawToken = urlParams.get('token')
-
-    if (!rawToken) return setStatus("error")
+    if (!token) return setStatus("error")
 
     const verify = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_URL}/api/v1/user/verify?token=${rawToken}`
+          `${import.meta.env.VITE_URL}/api/v1/user/verify/${token}`
         )
         if (res.data.success) {
           setStatus("success")
@@ -30,7 +27,7 @@ const VerifyEmail = () => {
     }
 
     verify()
-  }, [])
+  }, [token])
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "#f5f0e8" }}>
@@ -74,8 +71,7 @@ const VerifyEmail = () => {
             </div>
             <h2 className="font-bold text-base" style={{ color: "#2d2d2d" }}>Link Expired</h2>
             <p className="text-xs mt-2 mb-5" style={{ color: "#9a8a7a" }}>Your verification link has expired.</p>
-            <button
-              onClick={() => navigate('/reverify')}
+            <button onClick={() => navigate('/reverify')}
               className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
               style={{ background: "#b97a00" }}>
               Resend Verification Email
@@ -92,8 +88,7 @@ const VerifyEmail = () => {
             </div>
             <h2 className="font-bold text-base" style={{ color: "#2d2d2d" }}>Verification Failed</h2>
             <p className="text-xs mt-2 mb-5" style={{ color: "#9a8a7a" }}>Invalid or already used link.</p>
-            <button
-              onClick={() => navigate('/signup')}
+            <button onClick={() => navigate('/signup')}
               className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
               style={{ background: "#3d6b40" }}>
               Back to Signup

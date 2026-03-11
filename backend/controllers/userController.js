@@ -57,12 +57,7 @@ export const register = async (req, res) => {
 =========================== */
 export const verify = async (req, res) => {
   try {
-    const raw = req.query.token || req.body.token
-    const token = decodeURIComponent(raw)
-
-     console.log('🔐 Raw token:', raw?.substring(0, 30))
-    console.log('🔐 Decoded token:', token?.substring(0, 30))
-    console.log('🔐 SECRET_KEY exists:', !!process.env.SECRET_KEY)
+    const token = req.params.token  // ← changed from req.query.token to req.params.token
 
     if (!token) {
       return res.status(400).json({
