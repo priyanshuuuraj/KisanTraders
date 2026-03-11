@@ -3,121 +3,108 @@ import { Session } from "../models/sessionModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { verifyEmail } from "../emailVerify/verifyEmail.js";
-import { sendOTPMail } from "../emailVerify/sendOTPMain.js";
+import { sendOTPMail } from "../emailVerify/sendOTPMail.js";
 import cloudinary from "../utils/cloudinary.js";
 
 
 /* ===========================
-   REGISTER
+   REGISTER  ← fixed: don't expose full user object (has password)
 =========================== */
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body
 
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required"
-      });
+      return res.status(400).json({ success: false, message: "All fields are required" })
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email })
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists"
-      });
+      return res.status(400).json({ success: false, message: "User already exists" })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword
-    });
+      firstName, lastName, email, password: hashedPassword
+    })
 
     const token = jwt.sign(
       { id: newUser._id, email: newUser.email },
       process.env.SECRET_KEY,
       { expiresIn: "1d" }
-    );
+    )
 
-    await verifyEmail(token, email);
+    newUser.token = token
+    await newUser.save()
 
-    newUser.token = token;
-    await newUser.save();
+    // Send email AFTER saving token
+    const emailSent = await verifyEmail(token, email)
+    if (!emailSent) {
+      console.warn('⚠️ Email sending failed but user was registered')
+    }
 
     return res.status(201).json({
       success: true,
-      message: "User registered successfully",
-      user: newUser
-    });
+      message: "Registered successfully! Please check your email to verify your account."
+      // ✅ Don't send user object — it contains hashed password
+    })
 
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    return res.status(500).json({ success: false, message: error.message })
   }
-};
+}
 
 
 /* ===========================
-   VERIFY EMAIL
+   VERIFY EMAIL  ← fixed: reads token from query param
 =========================== */
 export const verify = async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.query.token || req.body.token
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!token) {
       return res.status(400).json({
         success: false,
-        message: "Authorization token is missing or invalid"
-      });
+        message: "Verification token is missing"
+      })
     }
 
-    const token = authHeader.split(" ")[1];
-
-    let decoded;
+    let decoded
     try {
-      decoded = jwt.verify(token, process.env.SECRET_KEY);
+      decoded = jwt.verify(token, process.env.SECRET_KEY)
     } catch (error) {
       return res.status(400).json({
         success: false,
-        message:
-          error.name === "TokenExpiredError"
-            ? "The registration token has expired"
-            : "Token verification failed"
-      });
+        message: error.name === "TokenExpiredError"
+          ? "Verification link has expired. Please request a new one."
+          : "Invalid verification token"
+      })
     }
 
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id)
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "User not found"
-      });
+      return res.status(400).json({ success: false, message: "User not found" })
     }
 
-    user.token = null;
-    user.isVerified = true;
+    if (user.isVerified) {
+      return res.status(400).json({ success: false, message: "Email is already verified" })
+    }
 
-    await user.save();
+    user.token = null
+    user.isVerified = true
+    await user.save()
 
     return res.status(200).json({
       success: true,
-      message: "Email verified successfully"
-    });
+      message: "Email verified successfully! You can now login."
+    })
 
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    return res.status(500).json({ success: false, message: error.message })
   }
-};
+}
+
 
 
 /* ===========================

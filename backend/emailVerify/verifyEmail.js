@@ -1,29 +1,59 @@
-import nodemailer from 'nodemailer'
-import 'dotenv/config'
+import { Resend } from 'resend'
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  family: 4,
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS
-  }
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const verifyEmail = async (token, email) => {
   const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
+  const verifyLink = `${frontendUrl}/verify?token=${token}`
 
   try {
-    await transporter.sendMail({
-      from: `KisanTraders <${process.env.MAIL_USER}>`,
+    const { data, error } = await resend.emails.send({
+      from: 'KisanTraders <onboarding@resend.dev>',
       to: email,
       subject: 'Verify Your Email - KisanTraders',
-      html: `...`
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f5f0e8;border-radius:12px;">
+          <div style="text-align:center;margin-bottom:24px;">
+            <h1 style="color:#3b2a1a;margin:0;">🌾 KisanTraders</h1>
+            <p style="color:#5c3d1e;margin:4px 0 0;">Your trusted hardware store</p>
+          </div>
+          <div style="background:white;border-radius:12px;padding:32px;">
+            <h2 style="color:#2d4a2e;margin-top:0;">Verify Your Email Address</h2>
+            <p style="color:#555;line-height:1.6;">
+              Hi there! Thanks for registering with KisanTraders. 
+              Please verify your email to activate your account.
+            </p>
+            <div style="text-align:center;margin:32px 0;">
+              <a href="${verifyLink}"
+                style="background:linear-gradient(135deg,#2d4a2e,#3d6b40);
+                       color:white;padding:14px 32px;border-radius:8px;
+                       text-decoration:none;font-weight:bold;font-size:16px;
+                       display:inline-block;">
+                ✅ Verify My Email
+              </a>
+            </div>
+            <p style="color:#888;font-size:13px;text-align:center;">
+              Or copy this link into your browser:<br/>
+              <a href="${verifyLink}" style="color:#5c3d1e;word-break:break-all;">
+                ${verifyLink}
+              </a>
+            </p>
+            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:24px;">
+              ⏳ This link expires in <strong>1 day</strong>.<br/>
+              If you didn't create an account, please ignore this email.
+            </p>
+          </div>
+        </div>
+      `
     })
+
+    if (error) throw new Error(error.message)
+
     console.log('✅ Verification email sent to:', email)
-    return { messageId: 'sent' }
+    return { messageId: data.id }
+
   } catch (err) {
-    console.error('❌ Email failed:', err.message)
+    console.error('❌ Verification email failed:', err.message)
     return null
   }
 }
