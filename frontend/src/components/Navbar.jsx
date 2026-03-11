@@ -29,17 +29,20 @@ const Navbar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_URL}/api/v1/user/logout`,
+        `/api/v1/user/logout`,  // ← relative URL, no VITE_URL needed
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       if (res.data.success) {
-        dispatch(setUser(null))
+        localStorage.removeItem("accessToken");  // ← also clear the token
+        dispatch(setUser(null));
         toast.success(res.data.message);
-        setMobileOpen(false)
+        setMobileOpen(false);
+        navigate("/login");  // ← redirect after logout
       }
     } catch (error) {
       console.log(error);
+      toast.error("Logout failed");
     }
   }
 
