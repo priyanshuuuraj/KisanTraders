@@ -57,13 +57,10 @@ export const register = async (req, res) => {
 =========================== */
 export const verify = async (req, res) => {
   try {
-    const token = req.params.token  // ← changed from req.query.token to req.params.token
+    const token = req.params.token
 
     if (!token) {
-      return res.status(400).json({
-        success: false,
-        message: "Verification token is missing"
-      })
+      return res.status(400).json({ success: false, message: "Verification token is missing" })
     }
 
     let decoded
@@ -83,11 +80,15 @@ export const verify = async (req, res) => {
       return res.status(400).json({ success: false, message: "User not found" })
     }
 
+    // ✅ Don't fail if already verified — just return success
     if (user.isVerified) {
-      return res.status(400).json({ success: false, message: "Email is already verified" })
+      return res.status(200).json({
+        success: true,
+        message: "Email verified successfully! You can now login."
+      })
     }
 
-    user.token = null
+    // ✅ Remove user.token = null so Gmail pre-fetch doesn't break it
     user.isVerified = true
     await user.save()
 
