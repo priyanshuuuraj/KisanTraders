@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'  // ← useSearchParams not useParams
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CheckCircle2, XCircle, Loader2, Wrench } from 'lucide-react'
 
 const VerifyEmail = () => {
-  const [searchParams] = useSearchParams()          // ← read ?token= from URL
-  const token = searchParams.get('token')           // ← extract token
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get('token')
   const navigate = useNavigate()
   const [status, setStatus] = useState("verifying")
 
@@ -14,8 +14,9 @@ const VerifyEmail = () => {
 
     const verify = async () => {
       try {
-        const res = await axios.get(               // ← GET not POST
-          `${import.meta.env.VITE_URL}/api/v1/user/verify?token=${token}`
+        const res = await axios.get(
+          `${import.meta.env.VITE_URL}/api/v1/user/verify`,
+          { params: { token } }  
         )
         if (res.data.success) {
           setStatus("success")
@@ -33,7 +34,7 @@ const VerifyEmail = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "#f5f0e8" }}>
       <div className="w-full max-w-sm rounded-2xl border p-8 text-center" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
-        
+
         <div className="flex items-center justify-center gap-2 mb-6">
           <div className="p-1.5 rounded-xl" style={{ background: "rgba(143,185,122,0.15)" }}>
             <Wrench className="w-4 h-4" style={{ color: "#3d6b40" }} />
@@ -58,12 +59,12 @@ const VerifyEmail = () => {
                 <CheckCircle2 className="w-10 h-10" style={{ color: "#3d6b40" }} />
               </div>
             </div>
-            <h2 className="font-bold text-base" style={{ color: "#2d4a2e" }}>Email Verified!</h2>
+            <h2 className="font-bold text-base" style={{ color: "#2d4a2e" }}>Email Verified! 🎉</h2>
             <p className="text-xs mt-2" style={{ color: "#9a8a7a" }}>Redirecting you to login...</p>
           </>
         )}
 
-        {status === "expired" && (           // ← new expired state
+        {status === "expired" && (
           <>
             <div className="flex justify-center mb-4">
               <div className="rounded-full p-3" style={{ background: "rgba(255,180,0,0.1)" }}>
@@ -72,7 +73,8 @@ const VerifyEmail = () => {
             </div>
             <h2 className="font-bold text-base" style={{ color: "#2d2d2d" }}>Link Expired</h2>
             <p className="text-xs mt-2 mb-5" style={{ color: "#9a8a7a" }}>Your verification link has expired.</p>
-            <button onClick={() => navigate('/reverify')}
+            <button
+              onClick={() => navigate('/reverify')}
               className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
               style={{ background: "#b97a00" }}>
               Resend Verification Email
@@ -89,7 +91,8 @@ const VerifyEmail = () => {
             </div>
             <h2 className="font-bold text-base" style={{ color: "#2d2d2d" }}>Verification Failed</h2>
             <p className="text-xs mt-2 mb-5" style={{ color: "#9a8a7a" }}>Invalid or already used link.</p>
-            <button onClick={() => navigate('/signup')}
+            <button
+              onClick={() => navigate('/signup')}
               className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
               style={{ background: "#3d6b40" }}>
               Back to Signup
