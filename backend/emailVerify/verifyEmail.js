@@ -1,4 +1,9 @@
-export const verifyEmail = async (token, email) => {
+  export const verifyEmail = async (token, email) => {
+
+  console.log('🔑 API KEY:', process.env.BREVO_API_KEY)
+  console.log('📧 SENDER:', process.env.BREVO_EMAIL)
+  console.log('📨 TO:', email)
+
   const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
   const verifyLink = `${frontendUrl}/verify?token=${token}`
 
