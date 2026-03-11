@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CheckCircle2, XCircle, Loader2, Wrench } from 'lucide-react'
 
 const VerifyEmail = () => {
-  const [searchParams] = useSearchParams()
-  const token = searchParams.get('token')
   const navigate = useNavigate()
   const [status, setStatus] = useState("verifying")
 
   useEffect(() => {
-    if (!token) return setStatus("error")
+    // ✅ get raw token directly from URL without any decoding
+    const urlParams = new URLSearchParams(window.location.search)
+    const rawToken = urlParams.get('token')
+
+    if (!rawToken) return setStatus("error")
 
     const verify = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_URL}/api/v1/user/verify`,
-          { params: { token } }  
+          `${import.meta.env.VITE_URL}/api/v1/user/verify?token=${rawToken}`
         )
         if (res.data.success) {
           setStatus("success")
@@ -29,7 +30,7 @@ const VerifyEmail = () => {
     }
 
     verify()
-  }, [token])
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "#f5f0e8" }}>
