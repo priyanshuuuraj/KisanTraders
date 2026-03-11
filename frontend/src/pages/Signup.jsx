@@ -29,7 +29,7 @@ const Signup = () => {
             )
             if (res.data.success) {
                 toast.success(res.data.message)
-                navigate('/verify')
+                navigate('/reverify')
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || "Signup Failed")

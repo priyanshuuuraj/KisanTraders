@@ -46,10 +46,6 @@ const router = createBrowserRouter([
     element: <VerifyEmail />
   },
   {
-    path: '/verify',
-    element: <VerifyEmail />
-  },
-  {
     path: '/profile/:userId',
     element: <ProtectedRoute><Navbar /><Profile /></ProtectedRoute>
   },
