@@ -1,6 +1,9 @@
 export const verifyEmail = async (token, email) => {
-  const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
-  const verifyLink = `${frontendUrl}/verify?token=${encodeURIComponent(token)}`
+  // ✅ use FRONTEND_URL instead of VITE_URL
+  const frontendUrl = process.env.FRONTEND_URL || 'https://kisantraders.onrender.com'
+  const verifyLink = `${frontendUrl}/verify?token=${token}`
+
+  console.log('🔗 Verify link:', verifyLink) // ← add this to confirm
 
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
