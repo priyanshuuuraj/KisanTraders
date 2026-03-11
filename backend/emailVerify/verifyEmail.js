@@ -1,14 +1,16 @@
-import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail } from '@getbrevo/brevo'
+import SibApiV3Sdk from 'sib-api-v3-sdk'
 
-const apiInstance = new TransactionalEmailsApi()
-apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY)
+const client = SibApiV3Sdk.ApiClient.instance
+client.authentications['api-key'].apiKey = process.env.BREVO_API_KEY
+
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
 
 export const verifyEmail = async (token, email) => {
   const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
   const verifyLink = `${frontendUrl}/verify?token=${token}`
 
   try {
-    const sendSmtpEmail = new SendSmtpEmail()
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail()
     sendSmtpEmail.to = [{ email }]
     sendSmtpEmail.sender = { name: 'KisanTraders', email: process.env.BREVO_EMAIL }
     sendSmtpEmail.subject = 'Verify Your Email - KisanTraders'
