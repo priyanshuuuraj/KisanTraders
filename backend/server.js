@@ -20,7 +20,8 @@ app.use(cors({
     "http://localhost:5173",
     "https://kisantraders.onrender.com"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
 const _dirname = path.resolve();
@@ -32,7 +33,7 @@ app.use("/api/v1/orders", orderRoute);
 
 app.use(express.static(path.join(_dirname, "frontend/dist")));
 
-app.get("*", (_, res) => {
+app.get("/{*splat}", (_, res) => {
   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 
