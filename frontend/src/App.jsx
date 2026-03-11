@@ -42,9 +42,13 @@ const router = createBrowserRouter([
     element: <Verify />
   },
   {
-  path: '/verify/:token',   
-  element: <VerifyEmail />
-},
+    path: '/verify/:token',
+    element: <VerifyEmail />
+  },
+  {
+    path: '/verify',
+    element: <VerifyEmail />
+  },
   {
     path: '/profile/:userId',
     element: <ProtectedRoute><Navbar /><Profile /></ProtectedRoute>
@@ -77,18 +81,18 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: <ProtectedRoute adminOnly={true}><Navbar /><Dashboard /></ProtectedRoute>,
     children: [
-      { path: 'sales',                  element: <AdminSales /> },
-      { path: 'add-product',            element: <AddProduct /> },
-      { path: 'products',               element: <AdminProduct /> },
-      { path: 'orders',                 element: <AdminOrders /> },
-      { path: 'users',                  element: <AdminUsers /> },
-      { path: 'users/orders/:userId',   element: <ShowUserOrders /> },
-      { path: 'users/:id',              element: <UserInfo /> },
+      { path: 'sales', element: <AdminSales /> },
+      { path: 'add-product', element: <AddProduct /> },
+      { path: 'products', element: <AdminProduct /> },
+      { path: 'orders', element: <AdminOrders /> },
+      { path: 'users', element: <AdminUsers /> },
+      { path: 'users/orders/:userId', element: <ShowUserOrders /> },
+      { path: 'users/:id', element: <UserInfo /> },
     ]
   }
 ])
 
-const App = () => {        
+const App = () => {
   return <RouterProvider router={router} />
 }
 
