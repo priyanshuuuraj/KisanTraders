@@ -26,25 +26,31 @@ const Navbar = () => {
   // Close mobile menu on route change
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
+
   const logoutHandler = async () => {
     try {
-      const res = await axios.post(
-        `/api/v1/user/logout`,  // ← relative URL, no VITE_URL needed
-        {},
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      if (res.data.success) {
-        localStorage.removeItem("accessToken");  // ← also clear the token
-        dispatch(setUser(null));
-        toast.success(res.data.message);
-        setMobileOpen(false);
-        navigate("/login");  // ← redirect after logout
+      const token = localStorage.getItem("accessToken");
+
+      if (token) {
+        await axios.post(
+          `/api/v1/user/logout`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
       }
     } catch (error) {
       console.log(error);
-      toast.error("Logout failed");
+    } finally {
+      // Always clear state regardless of API success/fail
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      dispatch(setUser(null));
+      toast.success("Logged out successfully");
+      setMobileOpen(false);
+      navigate("/login");
     }
-  }
+  };
+  
 
   const isActive = (path) => location.pathname === path
 
