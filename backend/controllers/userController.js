@@ -60,6 +60,10 @@ export const verify = async (req, res) => {
     const raw = req.query.token || req.body.token
     const token = decodeURIComponent(raw)
 
+     console.log('🔐 Raw token:', raw?.substring(0, 30))
+    console.log('🔐 Decoded token:', token?.substring(0, 30))
+    console.log('🔐 SECRET_KEY exists:', !!process.env.SECRET_KEY)
+
     if (!token) {
       return res.status(400).json({
         success: false,
