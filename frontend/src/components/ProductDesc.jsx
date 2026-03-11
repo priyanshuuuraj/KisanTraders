@@ -9,6 +9,7 @@ const ProductDesc = ({ product }) => {
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [expanded, setExpanded] = useState(false);
 
     const addToCart = async (productId) => {
         const accessToken = localStorage.getItem("accessToken");
@@ -42,7 +43,7 @@ const ProductDesc = ({ product }) => {
     };
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4 sm:gap-5">
 
             {/* Category + Brand badges */}
             <div className="flex items-center gap-2 flex-wrap">
@@ -63,13 +64,13 @@ const ProductDesc = ({ product }) => {
             </div>
 
             {/* Title */}
-            <h1 className="font-bold text-3xl leading-tight" style={{ color: "#2d2d2d" }}>
+            <h1 className="font-bold text-2xl sm:text-3xl leading-tight" style={{ color: "#2d2d2d" }}>
                 {product.productName}
             </h1>
 
             {/* Price */}
             <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold" style={{ color: "#3d6b40" }}>
+                <span className="text-2xl sm:text-3xl font-bold" style={{ color: "#3d6b40" }}>
                     ₹{product.productPrice?.toLocaleString("en-IN")}
                 </span>
             </div>
@@ -77,20 +78,40 @@ const ProductDesc = ({ product }) => {
             {/* Divider */}
             <div className="h-px" style={{ background: "rgba(143,185,122,0.2)" }} />
 
-            {/* Description */}
-            <p className="text-sm leading-relaxed line-clamp-6" style={{ color: "#6b6b6b" }}>
-                {product.productDesc}
-            </p>
+            {/* Description — expandable on mobile */}
+            <div>
+                <p
+                    className="text-sm leading-relaxed"
+                    style={{
+                        color: "#6b6b6b",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: expanded ? "unset" : 4,
+                        overflow: "hidden",
+                    }}
+                >
+                    {product.productDesc}
+                </p>
+                {product.productDesc?.length > 200 && (
+                    <button
+                        onClick={() => setExpanded(e => !e)}
+                        className="mt-1.5 text-xs font-semibold"
+                        style={{ color: "#3d6b40" }}
+                    >
+                        {expanded ? "Show less ↑" : "Read more ↓"}
+                    </button>
+                )}
+            </div>
 
             {/* Quantity Selector */}
-            <div className="flex items-center gap-4">
-                <p className="text-sm font-medium" style={{ color: "#5a5a5a" }}>Quantity</p>
+            <div className="flex items-center gap-3 sm:gap-4">
+                <p className="text-sm font-medium flex-shrink-0" style={{ color: "#5a5a5a" }}>Quantity</p>
                 <div className="flex items-center rounded-xl overflow-hidden border"
                     style={{ borderColor: "rgba(143,185,122,0.3)" }}>
                     <button
                         onClick={handleDecrement}
                         disabled={quantity <= 1}
-                        className="w-10 h-10 flex items-center justify-center transition-all duration-150 disabled:opacity-30"
+                        className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center transition-all duration-150 disabled:opacity-30 touch-manipulation"
                         style={{ background: "rgba(143,185,122,0.08)", color: "#3d6b40" }}
                         onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.18)"}
                         onMouseLeave={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
@@ -104,7 +125,7 @@ const ProductDesc = ({ product }) => {
                         min={1}
                         max={product?.stock || undefined}
                         onChange={handleInputChange}
-                        className="w-12 h-10 text-center text-sm font-bold focus:outline-none border-x"
+                        className="w-12 h-10 sm:h-11 text-center text-sm font-bold focus:outline-none border-x"
                         style={{
                             background: "#fff",
                             color: "#2d2d2d",
@@ -115,7 +136,7 @@ const ProductDesc = ({ product }) => {
                     <button
                         onClick={handleIncrement}
                         disabled={product?.stock && quantity >= product.stock}
-                        className="w-10 h-10 flex items-center justify-center transition-all duration-150 disabled:opacity-30"
+                        className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center transition-all duration-150 disabled:opacity-30 touch-manipulation"
                         style={{ background: "rgba(143,185,122,0.08)", color: "#3d6b40" }}
                         onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.18)"}
                         onMouseLeave={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
@@ -125,11 +146,11 @@ const ProductDesc = ({ product }) => {
                 </div>
             </div>
 
-            {/* Add to Cart Button */}
+            {/* Add to Cart Button — full width on mobile */}
             <button
                 onClick={() => addToCart(product._id)}
                 disabled={loading}
-                className="flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-[0.97] disabled:opacity-60 w-fit"
+                className="flex items-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-[0.97] disabled:opacity-60 w-full sm:w-fit justify-center touch-manipulation"
                 style={{
                     background: loading ? "#a0c896" : "linear-gradient(135deg, #2d4a2e, #3d6b40)",
                     color: "#fff",
@@ -141,7 +162,6 @@ const ProductDesc = ({ product }) => {
                 <ShoppingCart className="w-4 h-4" />
                 {loading ? "Adding..." : "Add to Cart"}
             </button>
-
         </div>
     );
 };

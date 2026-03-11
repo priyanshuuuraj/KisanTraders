@@ -5,13 +5,11 @@ import { Wrench, MapPin, Phone, Mail } from "lucide-react";
 const Footer = () => {
   return (
     <footer style={{ background: "#1a2e1a" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
 
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="grid md:grid-cols-4 gap-10">
-
-          {/* Brand */}
-          <div className="md:col-span-1">
+          {/* Brand — full width on mobile */}
+          <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="p-2 rounded-xl" style={{ background: "rgba(143,185,122,0.15)" }}>
                 <Wrench className="w-4 h-4" style={{ color: "#8fb97a" }} />
@@ -37,10 +35,10 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: "#d4a574" }}>
+            <h3 className="text-sm font-semibold uppercase tracking-widest mb-4 sm:mb-5" style={{ color: "#d4a574" }}>
               Quick Links
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5 sm:space-y-3">
               {["Home", "Shop", "About", "Contact"].map(link => (
                 <li key={link}>
                   <a href="#" className="text-sm transition-colors duration-150 hover:text-white"
@@ -54,10 +52,10 @@ const Footer = () => {
 
           {/* Customer Service */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: "#d4a574" }}>
+            <h3 className="text-sm font-semibold uppercase tracking-widest mb-4 sm:mb-5" style={{ color: "#d4a574" }}>
               Customer Service
             </h3>
-            <ul className="space-y-3 mb-7">
+            <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-7">
               {["FAQs", "Order Tracking", "Returns & Refunds", "Shipping Info"].map(link => (
                 <li key={link}>
                   <a href="#" className="text-sm transition-colors duration-150 hover:text-white"
@@ -67,12 +65,10 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-
-            {/* Social */}
             <h3 className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: "#d4a574" }}>
               Follow Us
             </h3>
-            <div className="flex gap-3">
+            <div className="flex gap-2.5 sm:gap-3">
               {[FaFacebook, FaInstagram, FaTwitterSquare, FaPinterest].map((Icon, i) => (
                 <a key={i} href="#"
                   className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 hover:scale-110"
@@ -86,12 +82,12 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Newsletter */}
-          <div>
+          {/* Newsletter — full width on mobile */}
+          <div className="col-span-2 md:col-span-1">
             <h3 className="text-sm font-semibold uppercase tracking-widest mb-2" style={{ color: "#d4a574" }}>
               Stay in the Loop
             </h3>
-            <p className="text-sm mb-5" style={{ color: "rgba(245,240,232,0.45)" }}>
+            <p className="text-sm mb-4 sm:mb-5" style={{ color: "rgba(245,240,232,0.45)" }}>
               Subscribe for offers, new arrivals, and more.
             </p>
             <form className="flex flex-col gap-2" onSubmit={e => e.preventDefault()}>
@@ -122,7 +118,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row justify-between items-center gap-2">
           <p className="text-xs" style={{ color: "rgba(245,240,232,0.3)" }}>
             © {new Date().getFullYear()} Kisan Traders. All rights reserved.
           </p>
@@ -131,7 +127,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-
     </footer>
   );
 };

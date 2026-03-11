@@ -1,8 +1,5 @@
 import React from "react";
-import { Button } from "./ui/button";
 import { ShieldCheck, Truck, Wrench } from "lucide-react";
-
-
 
 const Hero = () => {
   return (
@@ -17,41 +14,39 @@ const Hero = () => {
           style={{ background: "radial-gradient(circle, #8b5e3c, transparent)" }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-5"
           style={{ background: "radial-gradient(circle, #d4a574, transparent)" }} />
-
-        {/* Grain texture overlay */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "128px" }} />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 py-24 w-full">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-24 pt-28 w-full">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
 
           {/* LEFT CONTENT */}
-          <div>
+          <div className="text-center md:text-left">
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border text-sm font-medium"
+            <div className="inline-flex items-center gap-2 mb-6 md:mb-8 px-4 py-2 rounded-full border text-sm font-medium"
               style={{ borderColor: "rgba(212,165,116,0.3)", background: "rgba(212,165,116,0.08)", color: "#d4a574" }}>
               <ShieldCheck className="w-4 h-4" />
               Since 1995 · Trusted by Families
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl md:text-6xl font-bold leading-[1.1] mb-6" style={{ color: "#f5f0e8" }}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] mb-5 md:mb-6" style={{ color: "#f5f0e8" }}>
               भरोसेमंद<br />
               <span style={{ color: "#8fb97a" }}>हार्डवेयर</span> की<br />
               सही जगह
             </h1>
 
             {/* Description */}
-            <p className="text-lg mb-10 leading-relaxed max-w-md" style={{ color: "rgba(245,240,232,0.65)" }}>
+            <p className="text-base sm:text-lg mb-8 md:mb-10 leading-relaxed max-w-md mx-auto md:mx-0" style={{ color: "rgba(245,240,232,0.65)" }}>
               <span className="font-semibold" style={{ color: "#d4a574" }}>Kisan Traders</span> —
               घर की छोटी मरम्मत से लेकर बड़े काम तक,
               हर ज़रूरत का भरोसेमंद समाधान।
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-14">
+            <div className="flex flex-col sm:flex-row gap-3 mb-10 md:mb-14 justify-center md:justify-start">
               <button
                 className="px-8 py-4 rounded-xl font-semibold text-base transition-all duration-200 active:scale-[0.97] shadow-lg"
                 style={{ background: "#8fb97a", color: "#1a2e1a" }}
@@ -69,7 +64,7 @@ const Hero = () => {
             </div>
 
             {/* Trust Strips */}
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap gap-4 md:gap-6 justify-center md:justify-start">
               {[
                 { icon: <ShieldCheck className="w-4 h-4" />, text: "Quality Assured" },
                 { icon: <Truck className="w-4 h-4" />, text: "Fast Delivery" },
@@ -85,43 +80,37 @@ const Hero = () => {
           </div>
 
           {/* RIGHT IMAGE */}
-          <div className="relative flex justify-center md:justify-end">
-
-            {/* Decorative ring */}
+          <div className="relative flex justify-center md:justify-end mt-8 md:mt-0">
             <div className="absolute inset-0 rounded-3xl opacity-20 blur-xl"
               style={{ background: "radial-gradient(ellipse, #8fb97a, transparent 70%)" }} />
 
-            <div className="relative w-full max-w-[520px]">
+            <div className="relative w-full max-w-[420px] md:max-w-[520px]">
               <img
                 src="/shop.jpg"
                 alt="Kisan Traders Shop"
                 className="w-full rounded-3xl shadow-2xl object-cover"
                 style={{ border: "1px solid rgba(255,255,255,0.08)" }}
               />
-
-              {/* Overlay gradient on image bottom */}
               <div className="absolute bottom-0 left-0 right-0 h-1/3 rounded-b-3xl"
                 style={{ background: "linear-gradient(to top, rgba(26,46,26,0.6), transparent)" }} />
 
-              {/* Floating card — bottom left */}
-              <div className="absolute -bottom-5 -left-5 px-5 py-4 rounded-2xl shadow-xl hidden md:block"
+              {/* Floating cards — hidden on very small screens */}
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 px-4 sm:px-5 py-3 sm:py-4 rounded-2xl shadow-xl hidden sm:block"
                 style={{ background: "#f5f0e8", border: "1px solid rgba(0,0,0,0.06)" }}>
                 <p className="font-bold text-sm" style={{ color: "#2d4a2e" }}>Quality Products</p>
                 <p className="text-xs mt-0.5" style={{ color: "#7a6a5a" }}>Affordable Retail Prices</p>
               </div>
 
-              {/* Floating card — top right */}
-              <div className="absolute -top-5 -right-5 px-4 py-3 rounded-2xl shadow-xl hidden md:flex items-center gap-2"
+              <div className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl shadow-xl hidden sm:flex items-center gap-2"
                 style={{ background: "#2d4a2e", border: "1px solid rgba(143,185,122,0.2)" }}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(143,185,122,0.2)" }}>
-                  <ShieldCheck className="w-4 h-4" style={{ color: "#8fb97a" }} />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(143,185,122,0.2)" }}>
+                  <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: "#8fb97a" }} />
                 </div>
                 <div>
                   <p className="text-xs font-semibold" style={{ color: "#f5f0e8" }}>30 Years</p>
                   <p className="text-xs" style={{ color: "rgba(245,240,232,0.5)" }}>of Trust</p>
                 </div>
               </div>
-
             </div>
           </div>
 

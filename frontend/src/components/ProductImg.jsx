@@ -6,15 +6,15 @@ const ProductImg = ({ images }) => {
   const [mainImg, setMainImg] = useState(images?.[0]?.url);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
 
-      {/* Thumbnails */}
-      <div className="flex flex-col gap-2.5">
+      {/* Thumbnails — horizontal scroll on mobile, vertical on desktop */}
+      <div className="flex flex-row sm:flex-col gap-2 overflow-x-auto sm:overflow-x-visible pb-1 sm:pb-0 scrollbar-hide">
         {images?.map((img, index) => (
           <button
             key={index}
             onClick={() => setMainImg(img.url)}
-            className="w-16 h-16 rounded-xl overflow-hidden transition-all duration-150 flex-shrink-0"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden transition-all duration-150 flex-shrink-0"
             style={{
               border: mainImg === img.url
                 ? "2px solid #3d6b40"
@@ -35,7 +35,7 @@ const ProductImg = ({ images }) => {
       </div>
 
       {/* Main Image */}
-      <div className="rounded-2xl overflow-hidden"
+      <div className="rounded-2xl overflow-hidden flex-1"
         style={{
           border: "1px solid rgba(143,185,122,0.2)",
           background: "#faf7f2",
@@ -45,7 +45,7 @@ const ProductImg = ({ images }) => {
           <img
             src={mainImg}
             alt="product"
-            className="w-[460px] object-cover"
+            className="w-full sm:w-[460px] object-cover"
             style={{ display: "block" }}
           />
         </Zoom>
