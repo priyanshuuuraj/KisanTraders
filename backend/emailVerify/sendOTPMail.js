@@ -1,24 +1,30 @@
-import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+import nodemailer from 'nodemailer'
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_EMAIL,
+    pass: process.env.BREVO_SMTP_KEY
+  }
+})
 
 export const sendOTPMail = async (otp, email) => {
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'KisanTraders <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `KisanTraders <${process.env.BREVO_EMAIL}>`,
       to: email,
       subject: 'Your Password Reset OTP - KisanTraders',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f5f0e8;border-radius:12px;">
           <div style="text-align:center;margin-bottom:24px;">
             <h1 style="color:#3b2a1a;margin:0;">🌾 KisanTraders</h1>
-            <p style="color:#5c3d1e;margin:4px 0 0;">Your trusted hardware store</p>
           </div>
           <div style="background:white;border-radius:12px;padding:32px;">
             <h2 style="color:#2d4a2e;margin-top:0;">Password Reset OTP</h2>
-            <p style="color:#555;line-height:1.6;">
-              You requested to reset your password. Use the OTP below:
-            </p>
+            <p style="color:#555;">Use the OTP below to reset your password:</p>
             <div style="text-align:center;margin:32px 0;">
               <div style="background:#f5f0e8;border-radius:12px;padding:24px;display:inline-block;">
                 <p style="font-size:42px;font-weight:bold;color:#2d4a2e;letter-spacing:12px;margin:0;">
@@ -26,20 +32,15 @@ export const sendOTPMail = async (otp, email) => {
                 </p>
               </div>
             </div>
-            <p style="color:#aaa;font-size:12px;text-align:center;margin-top:24px;">
-              ⏳ This OTP expires in <strong>10 minutes</strong>.<br/>
-              If you didn't request this, please ignore this email.
+            <p style="color:#aaa;font-size:12px;text-align:center;">
+              ⏳ Expires in <strong>10 minutes</strong>. If you didn't request this, ignore this email.
             </p>
           </div>
         </div>
       `
     })
-
-    if (error) throw new Error(error.message)
-
     console.log('✅ OTP email sent to:', email)
-    return { messageId: data.id }
-
+    return { messageId: 'sent' }
   } catch (err) {
     console.error('❌ OTP email failed:', err.message)
     return null

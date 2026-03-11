@@ -1,14 +1,22 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_EMAIL,
+    pass: process.env.BREVO_SMTP_KEY
+  }
+})
 
 export const verifyEmail = async (token, email) => {
   const frontendUrl = process.env.VITE_URL || 'https://kisantraders.onrender.com'
   const verifyLink = `${frontendUrl}/verify?token=${token}`
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'KisanTraders <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `KisanTraders <${process.env.BREVO_EMAIL}>`,
       to: email,
       subject: 'Verify Your Email - KisanTraders',
       html: `
@@ -20,8 +28,7 @@ export const verifyEmail = async (token, email) => {
           <div style="background:white;border-radius:12px;padding:32px;">
             <h2 style="color:#2d4a2e;margin-top:0;">Verify Your Email Address</h2>
             <p style="color:#555;line-height:1.6;">
-              Hi there! Thanks for registering with KisanTraders. 
-              Please verify your email to activate your account.
+              Thanks for registering! Click the button below to activate your account.
             </p>
             <div style="text-align:center;margin:32px 0;">
               <a href="${verifyLink}"
@@ -33,27 +40,22 @@ export const verifyEmail = async (token, email) => {
               </a>
             </div>
             <p style="color:#888;font-size:13px;text-align:center;">
-              Or copy this link into your browser:<br/>
+              Or copy this link:<br/>
               <a href="${verifyLink}" style="color:#5c3d1e;word-break:break-all;">
                 ${verifyLink}
               </a>
             </p>
             <p style="color:#aaa;font-size:12px;text-align:center;margin-top:24px;">
-              ⏳ This link expires in <strong>1 day</strong>.<br/>
-              If you didn't create an account, please ignore this email.
+              ⏳ Expires in <strong>1 day</strong>. If you didn't register, ignore this.
             </p>
           </div>
         </div>
       `
     })
-
-    if (error) throw new Error(error.message)
-
     console.log('✅ Verification email sent to:', email)
-    return { messageId: data.id }
-
+    return { messageId: 'sent' }
   } catch (err) {
-    console.error('❌ Verification email failed:', err.message)
+    console.error('❌ Email failed:', err.message)
     return null
   }
 }
