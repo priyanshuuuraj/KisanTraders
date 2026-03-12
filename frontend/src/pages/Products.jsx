@@ -13,7 +13,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "@/redux/productSlice";
-import { PackageSearch } from "lucide-react";
+import { PackageSearch, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const { products: reduxProducts } = useSelector((state) => state.product);
@@ -28,6 +29,7 @@ const Products = () => {
   const [sortOrder, setSortOrder] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getAllProducts = async () => {
     try {
@@ -69,7 +71,17 @@ const Products = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Page header */}
-        <div className="pt-5 sm:pt-8 pb-1">
+        <div className="pt-4 sm:pt-6 pb-1">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 mb-4 px-3 py-2 rounded-xl text-sm border transition-all"
+            style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
+            onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Back
+          </button>
+
           <h1 className="text-xl sm:text-2xl font-bold" style={{ color: "#2d4a2e" }}>All Products</h1>
           <p className="text-xs sm:text-sm mt-0.5" style={{ color: "#9a8a7a" }}>
             {loading ? "Loading..." : `${filteredProducts.length} product${filteredProducts.length !== 1 ? "s" : ""} found`}
@@ -79,9 +91,6 @@ const Products = () => {
         {/* Main layout */}
         <div className="flex gap-4 sm:gap-6 mt-3 items-start">
 
-          {/* FilterSidebar:
-              - Desktop: sticky sidebar on left
-              - Mobile: small inline button that opens bottom sheet */}
           <FilterSidebar
             search={search}
             setSearch={setSearch}
