@@ -7,14 +7,15 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import ImageUpload from "@/components/ImageUpload";
 import { setProducts } from "@/redux/productSlice";
-import { Loader2, Pencil, Trash2, Search } from "lucide-react";
+import { Loader2, Pencil, Trash2, Search, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AdminProduct = () => {
     const { products } = useSelector(s => s.product);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [editProduct, setEditProduct] = useState(null);
     const [open, setOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -64,21 +65,29 @@ const AdminProduct = () => {
     const fieldStyle = (name) => ({ borderColor: focused === name ? "#3d6b40" : "rgba(0,0,0,0.1)", boxShadow: focused === name ? "0 0 0 3px rgba(61,107,64,0.08)" : "none" });
 
     return (
-        <div className="ml-[260px] min-h-screen py-25 px-8" style={{ background: "#f5f0e8" }}>
-            <div className="mb-6">
+        <div className="md:ml-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+
+            {/* Back button mobile */}
+            <button onClick={() => navigate(-1)}
+                className="flex md:hidden items-center gap-2 mb-4 px-3 py-2 rounded-xl text-sm border"
+                style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}>
+                <ArrowLeft className="w-3.5 h-3.5" /> Back
+            </button>
+
+            <div className="mb-5 md:mb-6">
                 <h1 className="text-xl font-bold" style={{ color: "#2d4a2e" }}>Products</h1>
                 <p className="text-xs mt-0.5" style={{ color: "#9a8a7a" }}>{filtered.length} items</p>
             </div>
 
-            <div className="flex justify-between items-center mb-6 gap-4">
-                <div className="relative">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mb-5 md:mb-6 gap-3">
+                <div className="relative flex-1 sm:max-w-[360px]">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: "#9a8a7a" }} />
                     <input type="text" placeholder="Search products..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-                        className="w-[360px] pl-9 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none"
+                        className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none"
                         style={{ background: "#fff", borderColor: "rgba(143,185,122,0.3)", color: "#2d2d2d" }} />
                 </div>
                 <Select onValueChange={setSortOrder}>
-                    <SelectTrigger className="w-[180px] rounded-xl text-sm" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.3)" }}>
+                    <SelectTrigger className="w-full sm:w-[180px] rounded-xl text-sm" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.3)" }}>
                         <SelectValue placeholder="Sort by Price" />
                     </SelectTrigger>
                     <SelectContent>
@@ -91,9 +100,9 @@ const AdminProduct = () => {
             <div className="flex flex-col gap-3">
                 {filtered.length > 0 ? filtered.map((product, index) => (
                     <div key={product._id || index}
-                        className="flex items-center gap-4 rounded-2xl px-5 py-4 border transition-all hover:shadow-md"
+                        className="flex items-center gap-3 md:gap-4 rounded-2xl px-4 md:px-5 py-3 md:py-4 border transition-all hover:shadow-md"
                         style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
-                        <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden" style={{ background: "#f5f0e8", border: "1px solid rgba(143,185,122,0.2)" }}>
+                        <div className="w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden" style={{ background: "#f5f0e8", border: "1px solid rgba(143,185,122,0.2)" }}>
                             {product.productImg?.[0]?.url
                                 ? <img src={product.productImg[0].url} alt={product.productName} className="w-full h-full object-cover" />
                                 : <div className="w-full h-full flex items-center justify-center text-xs" style={{ color: "#c5b5a5" }}>No img</div>}
@@ -103,11 +112,14 @@ const AdminProduct = () => {
                             <p className="text-xs mt-0.5" style={{ color: "#9a8a7a" }}>
                                 {product.category}{product.brand ? ` · ${product.brand}` : ""}
                             </p>
+                            <p className="font-bold text-sm mt-1 md:hidden" style={{ color: "#3d6b40" }}>
+                                ₹{Number(product.productPrice).toLocaleString("en-IN")}
+                            </p>
                         </div>
-                        <p className="font-bold text-sm w-24 text-right" style={{ color: "#3d6b40" }}>
+                        <p className="font-bold text-sm w-24 text-right hidden md:block" style={{ color: "#3d6b40" }}>
                             ₹{Number(product.productPrice).toLocaleString("en-IN")}
                         </p>
-                        <div className="flex gap-3 items-center">
+                        <div className="flex gap-2 items-center">
                             <Dialog open={open && editProduct?._id === product._id} onOpenChange={isOpen => { if (!isOpen) { setOpen(false); setEditProduct(null); } }}>
                                 <DialogTrigger asChild>
                                     <button onClick={() => { setOpen(true); setEditProduct(product); }}
@@ -118,7 +130,7 @@ const AdminProduct = () => {
                                         <Pencil className="w-3.5 h-3.5" />
                                     </button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6">
+                                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-4 md:p-6 mx-4">
                                     <DialogHeader>
                                         <DialogTitle style={{ color: "#2d4a2e" }}>Edit Product</DialogTitle>
                                         <DialogDescription style={{ color: "#9a8a7a" }}>Make changes and click save when done.</DialogDescription>
@@ -153,7 +165,7 @@ const AdminProduct = () => {
                                             ))}
                                         </div>
                                         {editProduct && <ImageUpload productData={editProduct} setProductData={setEditProduct} />}
-                                        <DialogFooter className="gap-2 pt-2">
+                                        <DialogFooter className="gap-2 pt-2 flex-col sm:flex-row">
                                             <button type="button" onClick={() => { setOpen(false); setEditProduct(null); }}
                                                 className="px-4 py-2 rounded-xl text-sm border transition-all"
                                                 style={{ borderColor: "rgba(0,0,0,0.15)", color: "#6b6b6b" }}>Cancel</button>
@@ -178,7 +190,7 @@ const AdminProduct = () => {
                                             : <Trash2 className="w-3.5 h-3.5" />}
                                     </button>
                                 </AlertDialogTrigger>
-                                <AlertDialogContent className="rounded-2xl">
+                                <AlertDialogContent className="rounded-2xl mx-4">
                                     <AlertDialogHeader>
                                         <AlertDialogTitle>Delete this product?</AlertDialogTitle>
                                         <AlertDialogDescription>This action cannot be undone. The product will be permanently removed.</AlertDialogDescription>

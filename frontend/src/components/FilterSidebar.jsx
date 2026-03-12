@@ -146,34 +146,31 @@ const FilterSidebar = ({ search, setSearch, category, setCategory, brand, setBra
 
   return (
     <>
-      {/* DESKTOP Sidebar */}
+      {/* DESKTOP Sidebar — hidden on mobile */}
       <div
-        className="hidden md:block w-60 rounded-2xl p-5 h-max sticky top-24 border"
+        className="hidden md:block w-60 flex-shrink-0 rounded-2xl p-5 h-max sticky top-24 border"
         style={{ background: "#faf7f2", borderColor: "rgba(143,185,122,0.2)" }}
       >
         <h2 className="font-bold text-base mb-4" style={{ color: "#2d4a2e" }}>Filters</h2>
         <FilterContent />
       </div>
 
-      {/* MOBILE Filter Button */}
-      <div className="md:hidden sticky top-[64px] z-10 px-4 pt-3 pb-2" style={{ background: "#f5f0e8" }}>
-        <button
-          onClick={() => setMobileOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all duration-150 active:scale-[0.97]"
-          style={{ borderColor: "#8fb97a", color: "#2d4a2e", background: "#fff" }}
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
-          {activeFilterCount > 0 && (
-            <span className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center"
-              style={{ background: "#8fb97a", color: "#1a2e1a" }}>
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
-      </div>
+      {/* MOBILE Filter Button — inline, not sticky */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="md:hidden self-start mt-1 flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold border-2 transition-all active:scale-[0.97] flex-shrink-0"
+        style={{ borderColor: "#8fb97a", color: "#2d4a2e", background: "#fff" }}
+      >
+        <SlidersHorizontal className="w-4 h-4" />
+        {activeFilterCount > 0 && (
+          <span className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center"
+            style={{ background: "#8fb97a", color: "#1a2e1a" }}>
+            {activeFilterCount}
+          </span>
+        )}
+      </button>
 
-      {/* MOBILE Bottom Sheet Overlay */}
+      {/* MOBILE Bottom Sheet */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           {/* Backdrop */}
@@ -185,14 +182,9 @@ const FilterSidebar = ({ search, setSearch, category, setCategory, brand, setBra
           {/* Drawer */}
           <div
             className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-5 overflow-y-auto"
-            style={{
-              background: "#faf7f2",
-              maxHeight: "85vh",
-            }}
+            style={{ background: "#faf7f2", maxHeight: "85vh" }}
           >
-            {/* Handle */}
             <div className="w-10 h-1 rounded-full mx-auto mb-4" style={{ background: "rgba(0,0,0,0.15)" }} />
-
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-bold text-base" style={{ color: "#2d4a2e" }}>Filters</h2>
               <button onClick={() => setMobileOpen(false)}
@@ -200,10 +192,7 @@ const FilterSidebar = ({ search, setSearch, category, setCategory, brand, setBra
                 <X className="w-4 h-4" style={{ color: "#5a5a5a" }} />
               </button>
             </div>
-
             <FilterContent />
-
-            {/* Apply button */}
             <button
               onClick={() => setMobileOpen(false)}
               className="w-full mt-5 py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"

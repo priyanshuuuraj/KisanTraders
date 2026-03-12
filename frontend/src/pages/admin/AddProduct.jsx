@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, PackagePlus, Tag, FileText, Layers, IndianRupee, Image } from "lucide-react";
+import { Loader2, PackagePlus, Tag, FileText, Layers, IndianRupee, Image, ArrowLeft } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const accessToken = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState("");
   const [productData, setProductData] = useState({ productName: "", productPrice: "", productDesc: "", productImg: [], brand: "", category: "" });
@@ -38,9 +39,16 @@ const AddProduct = () => {
   const fieldStyle = (name) => ({ borderColor: focused === name ? "#3d6b40" : "rgba(0,0,0,0.1)", boxShadow: focused === name ? "0 0 0 3px rgba(61,107,64,0.08)" : "none", transition: "all 0.15s" });
 
   return (
-    <div className="pl-[260px] min-h-screen py-25 pr-8" style={{ background: "#f5f0e8" }}>
-      <div className="mb-8 flex items-center gap-3">
-        <div className="p-3 rounded-xl" style={{ background: "rgba(143,185,122,0.15)" }}>
+    <div className="md:pl-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6 md:mb-8">
+        <button onClick={() => navigate(-1)}
+          className="p-2 rounded-xl border transition-all"
+          style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}>
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <div className="p-2.5 rounded-xl" style={{ background: "rgba(143,185,122,0.15)" }}>
           <PackagePlus className="w-5 h-5" style={{ color: "#3d6b40" }} />
         </div>
         <div>
@@ -50,10 +58,10 @@ const AddProduct = () => {
       </div>
 
       <form onSubmit={submitHandler}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
 
           {/* LEFT */}
-          <div className="rounded-2xl border p-6 space-y-4" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
+          <div className="rounded-2xl border p-4 md:p-6 space-y-4" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
             <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#5c3d1e" }}>Product Info</p>
 
             {fields.map(field => (
@@ -82,8 +90,8 @@ const AddProduct = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="space-y-5">
-            <div className="rounded-2xl border p-6" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
+          <div className="space-y-4 md:space-y-5">
+            <div className="rounded-2xl border p-4 md:p-6" style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
               <div className="flex items-center gap-2 mb-4">
                 <Image className="w-3.5 h-3.5" style={{ color: "#9a8a7a" }} />
                 <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#5c3d1e" }}>Product Images</p>

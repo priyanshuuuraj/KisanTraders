@@ -47,25 +47,28 @@ const UserInfo = () => {
     const lc = (name) => ({ color: focused === name ? "#3d6b40" : "#7a6a5a" });
 
     return (
-        <div className="ml-[260px] min-h-screen py-25 px-8" style={{ background: "#f5f0e8" }}>
+        <div className="md:ml-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
             <div className="max-w-3xl mx-auto">
-                <div className="flex items-center gap-4 mb-8">
+
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-6 md:mb-8">
                     <button onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm border transition-all"
-                        style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40" }}
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm border transition-all"
+                        style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}
                         onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
-                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                        onMouseLeave={e => e.currentTarget.style.background = "#fff"}>
                         <ArrowLeft className="w-3.5 h-3.5" /> Back
                     </button>
                     <h1 className="text-xl font-bold" style={{ color: "#2d4a2e" }}>Update User</h1>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
+
                     {/* Avatar card */}
-                    <div className="rounded-2xl border p-6 flex flex-col items-center text-center h-fit"
+                    <div className="rounded-2xl border p-5 md:p-6 flex flex-col items-center text-center h-fit"
                         style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
                         <div className="relative mb-4">
-                            <div className="w-24 h-24 rounded-full p-0.5"
+                            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full p-0.5"
                                 style={{ background: "linear-gradient(135deg, #8fb97a, #d4a574)" }}>
                                 <img src={updateUser?.profilePic || userLogo} alt="profile"
                                     className="w-full h-full rounded-full object-cover border-2 border-white" />
@@ -79,7 +82,7 @@ const UserInfo = () => {
                         <h2 className="font-bold text-sm" style={{ color: "#2d2d2d" }}>
                             {updateUser?.firstName} {updateUser?.lastName}
                         </h2>
-                        <p className="text-xs mt-1" style={{ color: "#9a8a7a" }}>{updateUser?.email}</p>
+                        <p className="text-xs mt-1 break-all" style={{ color: "#9a8a7a" }}>{updateUser?.email}</p>
                         <span className="mt-3 text-xs px-3 py-1 rounded-full font-semibold flex items-center gap-1.5"
                             style={{
                                 background: updateUser?.role === "admin" ? "rgba(212,165,116,0.15)" : "rgba(143,185,122,0.12)",
@@ -108,11 +111,11 @@ const UserInfo = () => {
                     </div>
 
                     {/* Form */}
-                    <div className="lg:col-span-2 rounded-2xl border p-6"
+                    <div className="lg:col-span-2 rounded-2xl border p-5 md:p-6"
                         style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
                         <h3 className="text-sm font-bold mb-5" style={{ color: "#2d4a2e" }}>Edit Information</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {[
                                     { name: "firstName", label: "First Name", icon: <User className="w-3 h-3" /> },
                                     { name: "lastName",  label: "Last Name",  icon: <User className="w-3 h-3" /> },
@@ -139,8 +142,8 @@ const UserInfo = () => {
                             </div>
 
                             {[
-                                { name: "phoneNo",  label: "Phone",    icon: <Phone className="w-3 h-3" /> },
-                                { name: "address",  label: "Address",  icon: <MapPin className="w-3 h-3" /> },
+                                { name: "phoneNo",  label: "Phone",   icon: <Phone className="w-3 h-3" /> },
+                                { name: "address",  label: "Address", icon: <MapPin className="w-3 h-3" /> },
                             ].map(f => (
                                 <div key={f.name}>
                                     <label className="text-xs font-semibold uppercase tracking-wide flex items-center gap-1.5 mb-1.5" style={lc(f.name)}>
@@ -153,7 +156,7 @@ const UserInfo = () => {
                                 </div>
                             ))}
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {[
                                     { name: "city",    label: "City",     icon: <Building2 className="w-3 h-3" /> },
                                     { name: "zipcode", label: "Zip Code", icon: <Hash className="w-3 h-3" />      },

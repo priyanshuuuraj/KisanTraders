@@ -1,7 +1,10 @@
 import React from "react";
 import { ShieldCheck, Truck, Wrench } from "lucide-react";
+import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
+  const navigate = useNavigate()   
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden"
       style={{ background: "linear-gradient(135deg, #1a2e1a 0%, #2d4a2e 45%, #3b2a1a 100%)" }}>
@@ -52,6 +55,7 @@ const Hero = () => {
                 style={{ background: "#8fb97a", color: "#1a2e1a" }}
                 onMouseEnter={e => e.target.style.background = "#7aa868"}
                 onMouseLeave={e => e.target.style.background = "#8fb97a"}
+                onClick={() => navigate('/products')}
               >
                 Shop Now →
               </button>

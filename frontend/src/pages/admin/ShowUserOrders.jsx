@@ -41,25 +41,31 @@ const ShowUserOrders = () => {
     };
 
     if (loading) return (
-        <div className="ml-[260px] min-h-screen flex items-center justify-center gap-2 text-sm" style={{ background: "#f5f0e8", color: "#9a8a7a" }}>
-            <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#8fb97a", borderTopColor: "transparent" }} />
+        <div className="md:ml-[260px] min-h-screen flex items-center justify-center gap-2 text-sm"
+            style={{ background: "#f5f0e8", color: "#9a8a7a" }}>
+            <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"
+                style={{ borderColor: "#8fb97a", borderTopColor: "transparent" }} />
             Loading orders...
         </div>
     );
 
     return (
-        <div className="ml-[260px] min-h-screen py-25 px-8" style={{ background: "#f5f0e8" }}>
-            <div className="flex items-center gap-4 mb-6">
+        <div className="md:ml-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-5 md:mb-6">
                 <button onClick={() => navigate(-1)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm border transition-all"
-                    style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40" }}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm border transition-all"
+                    style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}
                     onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                    onMouseLeave={e => e.currentTarget.style.background = "#fff"}>
                     <ArrowLeft className="w-3.5 h-3.5" /> Back
                 </button>
                 <div>
                     <h1 className="text-xl font-bold" style={{ color: "#2d4a2e" }}>User Orders</h1>
-                    <p className="text-xs mt-0.5" style={{ color: "#9a8a7a" }}>{orders.length} order{orders.length !== 1 ? "s" : ""}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "#9a8a7a" }}>
+                        {orders.length} order{orders.length !== 1 ? "s" : ""}
+                    </p>
                 </div>
             </div>
 
@@ -77,9 +83,11 @@ const ShowUserOrders = () => {
                         return (
                             <div key={order._id} className="rounded-2xl overflow-hidden border hover:shadow-md transition-shadow"
                                 style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
-                                <div className="flex items-center justify-between px-5 py-3"
+
+                                {/* Order header */}
+                                <div className="flex flex-wrap items-center justify-between gap-2 px-4 md:px-5 py-3"
                                     style={{ background: "#faf7f2", borderBottom: "1px solid rgba(143,185,122,0.12)" }}>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex flex-wrap items-center gap-2 md:gap-4">
                                         <span className="flex items-center gap-1.5 text-xs font-mono" style={{ color: "#9a8a7a" }}>
                                             <Hash className="w-3 h-3" />{order._id.slice(-8).toUpperCase()}
                                         </span>
@@ -88,7 +96,7 @@ const ShowUserOrders = () => {
                                             {new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-2">
                                         <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full"
                                             style={{ background: st.bg, color: st.text }}>
                                             <span className="w-1.5 h-1.5 rounded-full" style={{ background: st.dot }} />
@@ -103,32 +111,42 @@ const ShowUserOrders = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="px-5 py-4 space-y-3">
+
+                                {/* Products */}
+                                <div className="px-4 md:px-5 py-4 space-y-3">
                                     {order.products?.map((product, index) => (
-                                        <div key={index} className="flex items-center gap-3 cursor-pointer rounded-xl p-2 -mx-2 transition-all"
+                                        <div key={index}
+                                            className="flex items-center gap-3 cursor-pointer rounded-xl p-2 -mx-2 transition-all"
                                             onClick={() => navigate(`/products/${product?.productId?._id}`)}
                                             onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.06)"}
                                             onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                                            <img src={product?.productId?.productImg?.[0]?.url} alt={product?.productId?.productName}
+                                            <img src={product?.productId?.productImg?.[0]?.url}
+                                                alt={product?.productId?.productName}
                                                 className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
                                                 style={{ border: "1px solid rgba(143,185,122,0.2)" }} />
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium line-clamp-1" style={{ color: "#2d2d2d" }}>{product?.productId?.productName}</p>
+                                                <p className="text-sm font-medium line-clamp-1" style={{ color: "#2d2d2d" }}>
+                                                    {product?.productId?.productName}
+                                                </p>
                                                 <p className="text-xs" style={{ color: "#9a8a7a" }}>Qty: {product?.quantity}</p>
                                             </div>
-                                            <p className="text-sm font-bold" style={{ color: "#3d6b40" }}>
+                                            <p className="text-sm font-bold flex-shrink-0" style={{ color: "#3d6b40" }}>
                                                 ₹{(product?.productId?.productPrice * product?.quantity).toLocaleString("en-IN")}
                                             </p>
                                             <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: "#c5d9b8" }} />
                                         </div>
                                     ))}
                                 </div>
-                                <div className="flex items-center justify-between px-5 py-3"
+
+                                {/* Footer */}
+                                <div className="flex items-center justify-between px-4 md:px-5 py-3"
                                     style={{ background: "#faf7f2", borderTop: "1px solid rgba(143,185,122,0.12)" }}>
                                     <span />
                                     <div className="flex items-center gap-1.5">
                                         <span className="text-xs" style={{ color: "#9a8a7a" }}>Total</span>
-                                        <span className="text-sm font-bold" style={{ color: "#3d6b40" }}>₹{order.amount?.toLocaleString("en-IN")}</span>
+                                        <span className="text-sm font-bold" style={{ color: "#3d6b40" }}>
+                                            ₹{order.amount?.toLocaleString("en-IN")}
+                                        </span>
                                     </div>
                                 </div>
                             </div>

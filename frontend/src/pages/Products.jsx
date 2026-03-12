@@ -76,10 +76,12 @@ const Products = () => {
           </p>
         </div>
 
-        {/* Main layout: sidebar + products */}
-        <div className="flex gap-6 mt-2">
+        {/* Main layout */}
+        <div className="flex gap-4 sm:gap-6 mt-3 items-start">
 
-          {/* FilterSidebar — shows sticky sidebar on md+, floating button+sheet on mobile */}
+          {/* FilterSidebar:
+              - Desktop: sticky sidebar on left
+              - Mobile: small inline button that opens bottom sheet */}
           <FilterSidebar
             search={search}
             setSearch={setSearch}
@@ -143,7 +145,6 @@ const Products = () => {
                 ))}
               </div>
             )}
-
           </div>
         </div>
       </div>
