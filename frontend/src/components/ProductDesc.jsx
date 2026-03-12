@@ -1,119 +1,169 @@
-import { ShoppingCart, Heart } from "lucide-react";
 import React, { useState } from "react";
-import { Skeleton } from "./ui/skeleton";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { setCart } from "../redux/productSlice";
+import { setCart } from "@/redux/productSlice";
+import { ShoppingCart, Minus, Plus, Tag, Layers, Package } from "lucide-react";
 
-const ProductCard = ({ product, loading }) => {
-  const { productImg, productPrice, productName, category } = product || {};
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [adding, setAdding] = useState(false);
-  const [wished, setWished] = useState(false);
+const ProductDesc = ({ product }) => {
+    const dispatch = useDispatch();
+    const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [expanded, setExpanded] = useState(false);
 
-  const addToCart = async (productId) => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) { navigate("/login"); return; }
-    if (adding) return;
-    setAdding(true);
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_URL}/api/v1/cart/add`,
-        { productId, quantity: 1 },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      if (res.data.success) {
-        toast.success("Product added to cart");
-        dispatch(setCart(res.data.cart));
-      } else {
-        toast.error("Something went wrong");
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to add product");
-    } finally {
-      setAdding(false);
-    }
-  };
+    const addToCart = async (productId) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) { toast.error("Please login to add items to cart"); return; }
+        if (loading) return;
+        setLoading(true);
+        try {
+            const res = await axios.post(
+                `${import.meta.env.VITE_URL}/api/v1/cart/add`,
+                { productId, quantity },
+                { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
+            if (res?.data?.success) {
+                toast.success("Product added to cart");
+                dispatch(setCart(res.data.cart));
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Failed to add product");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  if (loading) return (
-    <div className="rounded-2xl overflow-hidden border flex gap-3 p-3"
-      style={{ background: "#fff", borderColor: "rgba(0,0,0,0.06)" }}>
-      <Skeleton className="w-24 h-24 rounded-xl flex-shrink-0" />
-      <div className="flex-1 space-y-2 py-1">
-        <Skeleton className="w-3/4 h-4" />
-        <Skeleton className="w-1/3 h-4" />
-        <Skeleton className="w-full h-8 rounded-xl mt-2" />
-      </div>
-    </div>
-  );
+    const handleDecrement = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
+    const handleIncrement = () => setQuantity(prev => product?.stock ? Math.min(prev + 1, product.stock) : prev + 1);
+    const handleInputChange = (e) => {
+        const val = Math.max(1, Number(e.target.value) || 1);
+        setQuantity(product?.stock ? Math.min(val, product.stock) : val);
+    };
 
-  return (
-    <div
-      className="rounded-2xl overflow-hidden border group transition-all duration-200 hover:shadow-lg flex gap-3 p-3"
-      style={{ background: "#fff", borderColor: "rgba(0,0,0,0.06)" }}
-    >
-      {/* Image */}
-      <div
-        className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 relative cursor-pointer"
-        style={{ background: "#f5f0e8" }}
-        onClick={() => navigate(`/products/${product._id}`)}
-      >
-        <img
-          src={productImg?.[0]?.url}
-          alt={productName}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
+    return (
+        <div className="flex flex-col gap-4 sm:gap-5">
 
-      {/* Info */}
-      <div className="flex flex-col flex-1 min-w-0 justify-between py-0.5">
-        <div>
-          {category && (
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full"
-              style={{ background: "rgba(143,185,122,0.12)", color: "#3d6b40" }}>
-              {category}
-            </span>
-          )}
-          <h1
-            className="font-semibold text-sm line-clamp-2 leading-snug mt-1 cursor-pointer"
-            style={{ color: "#2d2d2d" }}
-            onClick={() => navigate(`/products/${product._id}`)}
-          >
-            {productName}
-          </h1>
-        </div>
+            {/* Category + Brand badges */}
+            <div className="flex items-center gap-2 flex-wrap">
+                <span className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full"
+                    style={{ background: "rgba(143,185,122,0.12)", color: "#3d6b40" }}>
+                    <Layers className="w-3 h-3" /> {product.category}
+                </span>
+                <span className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full"
+                    style={{ background: "rgba(212,165,116,0.12)", color: "#7a4f2e" }}>
+                    <Tag className="w-3 h-3" /> {product.brand}
+                </span>
+                {product?.stock && (
+                    <span className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full"
+                        style={{ background: "rgba(143,185,122,0.08)", color: "#5a7a5a" }}>
+                        <Package className="w-3 h-3" /> {product.stock} in stock
+                    </span>
+                )}
+            </div>
 
-        <div className="flex items-center justify-between mt-2 gap-2">
-          <p className="font-bold text-base flex-shrink-0" style={{ color: "#3d6b40" }}>
-            ₹{productPrice?.toLocaleString("en-IN")}
-          </p>
-          <div className="flex items-center gap-1.5">
+            {/* Title */}
+            <h1 className="font-bold text-2xl sm:text-3xl leading-tight" style={{ color: "#2d2d2d" }}>
+                {product.productName}
+            </h1>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-bold" style={{ color: "#3d6b40" }}>
+                    ₹{product.productPrice?.toLocaleString("en-IN")}
+                </span>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px" style={{ background: "rgba(143,185,122,0.2)" }} />
+
+            {/* Description — expandable on mobile */}
+            <div>
+                <p
+                    className="text-sm leading-relaxed"
+                    style={{
+                        color: "#6b6b6b",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: expanded ? "unset" : 4,
+                        overflow: "hidden",
+                    }}
+                >
+                    {product.productDesc}
+                </p>
+                {product.productDesc?.length > 200 && (
+                    <button
+                        onClick={() => setExpanded(e => !e)}
+                        className="mt-1.5 text-xs font-semibold"
+                        style={{ color: "#3d6b40" }}
+                    >
+                        {expanded ? "Show less ↑" : "Read more ↓"}
+                    </button>
+                )}
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-3 sm:gap-4">
+                <p className="text-sm font-medium flex-shrink-0" style={{ color: "#5a5a5a" }}>Quantity</p>
+                <div className="flex items-center rounded-xl overflow-hidden border"
+                    style={{ borderColor: "rgba(143,185,122,0.3)" }}>
+                    <button
+                        onClick={handleDecrement}
+                        disabled={quantity <= 1}
+                        className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center transition-all duration-150 disabled:opacity-30 touch-manipulation"
+                        style={{ background: "rgba(143,185,122,0.08)", color: "#3d6b40" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.18)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
+                    >
+                        <Minus className="w-3.5 h-3.5" />
+                    </button>
+
+                    <input
+                        type="number"
+                        value={quantity}
+                        min={1}
+                        max={product?.stock || undefined}
+                        onChange={handleInputChange}
+                        className="w-12 h-10 sm:h-11 text-center text-sm font-bold focus:outline-none border-x"
+                        style={{
+                            background: "#fff",
+                            color: "#2d2d2d",
+                            borderColor: "rgba(143,185,122,0.3)",
+                        }}
+                    />
+
+                    <button
+                        onClick={handleIncrement}
+                        disabled={product?.stock && quantity >= product.stock}
+                        className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center transition-all duration-150 disabled:opacity-30 touch-manipulation"
+                        style={{ background: "rgba(143,185,122,0.08)", color: "#3d6b40" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.18)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
+                    >
+                        <Plus className="w-3.5 h-3.5" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Add to Cart Button — full width on mobile */}
             <button
-              onClick={() => setWished(w => !w)}
-              className="p-1.5 rounded-lg transition-all touch-manipulation"
-              style={{ background: wished ? "rgba(220,80,80,0.08)" : "rgba(0,0,0,0.04)" }}>
-              <Heart className="w-3.5 h-3.5"
-                style={{ color: wished ? "#dc5050" : "#aaa", fill: wished ? "#dc5050" : "none" }} />
-            </button>
-            <button
-              onClick={() => addToCart(product._id)}
-              disabled={adding}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-150 active:scale-[0.97] disabled:opacity-60 touch-manipulation"
-              style={{ background: adding ? "#a0c896" : "#3d6b40", color: "#fff" }}
-              onMouseEnter={e => { if (!adding) e.currentTarget.style.background = "#2d4a2e" }}
-              onMouseLeave={e => { if (!adding) e.currentTarget.style.background = "#3d6b40" }}
+                onClick={() => addToCart(product._id)}
+                disabled={loading}
+                className="flex items-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-[0.97] disabled:opacity-60 w-full sm:w-fit justify-center touch-manipulation"
+                style={{
+                    background: loading ? "#a0c896" : "linear-gradient(135deg, #2d4a2e, #3d6b40)",
+                    color: "#fff",
+                    boxShadow: "0 2px 14px rgba(61,107,64,0.3)",
+                }}
+                onMouseEnter={e => { if (!loading) e.currentTarget.style.boxShadow = "0 4px 20px rgba(61,107,64,0.45)" }}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 14px rgba(61,107,64,0.3)"}
             >
-              <ShoppingCart size={13} />
-              {adding ? "Adding..." : "Add"}
+                <ShoppingCart className="w-4 h-4" />
+                {loading ? "Adding..." : "Add to Cart"}
             </button>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default ProductCard;
+export default ProductDesc;
