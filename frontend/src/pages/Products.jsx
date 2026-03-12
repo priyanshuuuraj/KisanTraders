@@ -71,7 +71,7 @@ const Products = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Page header */}
-        <div className="pt-4 sm:pt-6 pb-1">
+        <div className="pt-4 sm:pt-20 pb-1">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 mb-4 px-3 py-2 rounded-xl text-sm border transition-all"

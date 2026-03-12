@@ -27,7 +27,7 @@ const SingleProduct = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Back button */}
-        <div className="pt-4 sm:pt-6 mb-3 sm:mb-4">
+        <div className="pt-4 sm:pt-20 mb-3 sm:mb-4">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm border transition-all"

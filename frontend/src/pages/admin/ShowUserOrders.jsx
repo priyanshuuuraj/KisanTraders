@@ -50,7 +50,7 @@ const ShowUserOrders = () => {
     );
 
     return (
-        <div className="md:ml-[260px] min-h-screen pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+        <div className="md:ml-[260px] min-h-screen pt-20 md:pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
 
             {/* Header */}
             <div className="flex items-center gap-3 mb-5 md:mb-6">

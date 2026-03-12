@@ -47,7 +47,7 @@ const UserInfo = () => {
     const lc = (name) => ({ color: focused === name ? "#3d6b40" : "#7a6a5a" });
 
     return (
-        <div className="md:ml-[260px] min-h-screen pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+        <div className="md:ml-[260px] min-h-screen pt-20 md:pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
             <div className="max-w-3xl mx-auto">
 
                 {/* Header */}

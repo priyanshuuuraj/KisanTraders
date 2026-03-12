@@ -36,7 +36,7 @@ const AdminSales = () => {
     )
 
     return (
-        <div className="md:pl-[260px] min-h-screen pt-20 md:pt-10 pb-10 px-4 md:px-6" style={{ background: "#f5f0e8" }}>
+        <div className="md:pl-[260px] min-h-screen pt-20 md:pt-20 md:pt-10 pb-10 px-4 md:px-6" style={{ background: "#f5f0e8" }}>
 
             {/* Back button (mobile only) */}
             <button onClick={() => navigate(-1)}
