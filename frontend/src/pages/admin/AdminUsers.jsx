@@ -27,7 +27,7 @@ const AdminUsers = () => {
     );
 
     return (
-        <div className="md:ml-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+        <div className="md:ml-[260px] min-h-screen pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
 
             {/* Back button mobile */}
             <button onClick={() => navigate(-1)}

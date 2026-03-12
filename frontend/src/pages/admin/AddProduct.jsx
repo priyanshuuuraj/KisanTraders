@@ -39,7 +39,7 @@ const AddProduct = () => {
   const fieldStyle = (name) => ({ borderColor: focused === name ? "#3d6b40" : "rgba(0,0,0,0.1)", boxShadow: focused === name ? "0 0 0 3px rgba(61,107,64,0.08)" : "none", transition: "all 0.15s" });
 
   return (
-    <div className="md:pl-[260px] min-h-screen py-6 md:py-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
+    <div className="md:pl-[260px] min-h-screen pt-20 md:pt-10 pb-10 px-4 md:px-8" style={{ background: "#f5f0e8" }}>
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-6 md:mb-8">
