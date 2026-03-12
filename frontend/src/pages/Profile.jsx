@@ -1,17 +1,18 @@
 import React, { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useDispatch, useSelector } from "react-redux"
 import userLogo from '../assets/def.png'
 import { setUser } from "@/redux/userSlice"
 import { toast } from "sonner"
 import axios from "axios"
 import MyOrder from "./MyOrder"
-import { Camera, User, Mail, Phone, MapPin, Building2, Hash, ShieldCheck, Wrench } from "lucide-react"
+import { Camera, User, Mail, Phone, MapPin, Building2, Hash, ShieldCheck, Wrench, ArrowLeft } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const Profile = () => {
   const { user } = useSelector(store => store.user)
+  const navigate = useNavigate()
   const [updateUser, setUpdateUser] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -69,7 +70,18 @@ const Profile = () => {
 
   return (
     <div className="pt-20 min-h-screen" style={{ background: "#f5f0e8" }}>
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+        {/* Back button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 mb-5 px-3 py-2 rounded-xl text-sm border transition-all"
+          style={{ borderColor: "rgba(143,185,122,0.3)", color: "#3d6b40", background: "#fff" }}
+          onMouseEnter={e => e.currentTarget.style.background = "rgba(143,185,122,0.08)"}
+          onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Back
+        </button>
 
         <Tabs defaultValue="profile" className="w-full">
 
@@ -77,30 +89,25 @@ const Profile = () => {
           <TabsList className="grid w-full grid-cols-2 mb-8 p-1 rounded-2xl border"
             style={{ background: "rgba(255,255,255,0.7)", borderColor: "rgba(143,185,122,0.25)" }}>
             <TabsTrigger value="profile"
-              className="rounded-xl text-sm font-semibold transition-all data-[state=active]:shadow-sm"
-              style={{ "--tw-shadow": "none" }}
-              data-active-style={{ background: "#2d4a2e", color: "#f5f0e8" }}
-            >
+              className="rounded-xl text-sm font-semibold transition-all data-[state=active]:shadow-sm">
               My Profile
             </TabsTrigger>
             <TabsTrigger value="orders"
-              className="rounded-xl text-sm font-semibold transition-all data-[state=active]:shadow-sm"
-            >
+              className="rounded-xl text-sm font-semibold transition-all data-[state=active]:shadow-sm">
               My Orders
             </TabsTrigger>
           </TabsList>
 
           {/* ── PROFILE TAB ── */}
           <TabsContent value="profile">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
 
               {/* LEFT: Avatar Card */}
-              <div className="rounded-2xl border p-6 flex flex-col items-center text-center h-fit"
+              <div className="rounded-2xl border p-5 sm:p-6 flex flex-col items-center text-center h-fit"
                 style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
 
-                {/* Avatar */}
                 <div className="relative mb-5">
-                  <div className="w-28 h-28 rounded-full p-0.5"
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-0.5"
                     style={{ background: "linear-gradient(135deg, #8fb97a, #d4a574)" }}>
                     <img
                       src={updateUser?.profilePic || userLogo}
@@ -118,7 +125,7 @@ const Profile = () => {
                 <h2 className="text-base font-bold" style={{ color: "#2d2d2d" }}>
                   {updateUser.firstName} {updateUser.lastName}
                 </h2>
-                <p className="text-xs mt-1" style={{ color: "#9a8a7a" }}>{updateUser.email}</p>
+                <p className="text-xs mt-1 break-all" style={{ color: "#9a8a7a" }}>{updateUser.email}</p>
 
                 <span className="mt-3 text-xs px-3 py-1 rounded-full font-semibold flex items-center gap-1.5"
                   style={{
@@ -136,7 +143,6 @@ const Profile = () => {
                   </p>
                 )}
 
-                {/* Divider */}
                 <div className="w-full mt-5 pt-5 space-y-2.5" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                   {updateUser.phoneNo && (
                     <div className="flex items-center gap-2 text-xs" style={{ color: "#7a7a7a" }}>
@@ -154,15 +160,14 @@ const Profile = () => {
               </div>
 
               {/* RIGHT: Form */}
-              <div className="lg:col-span-2 rounded-2xl border p-6"
+              <div className="lg:col-span-2 rounded-2xl border p-5 sm:p-6"
                 style={{ background: "#fff", borderColor: "rgba(143,185,122,0.2)" }}>
 
                 <h3 className="text-base font-bold mb-6" style={{ color: "#2d4a2e" }}>Edit Information</h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
 
-                  {/* Name Row */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
                       { name: "firstName", label: "First Name", icon: <User className="w-3 h-3" />, placeholder: "John" },
                       { name: "lastName", label: "Last Name", icon: <User className="w-3 h-3" />, placeholder: "Doe" },
@@ -176,7 +181,6 @@ const Profile = () => {
                     ))}
                   </div>
 
-                  {/* Email */}
                   <div>
                     <label className={labelClass("email")}><Mail className="w-3 h-3" />Email</label>
                     <Input type="email" name="email" disabled value={updateUser.email}
@@ -184,7 +188,6 @@ const Profile = () => {
                       style={{ background: "#faf7f2", borderColor: "rgba(0,0,0,0.08)", color: "#9a8a7a" }} />
                   </div>
 
-                  {/* Phone */}
                   <div>
                     <label className={labelClass("phoneNo")}><Phone className="w-3 h-3" />Phone Number</label>
                     <Input name="phoneNo" placeholder="9999999999" value={updateUser.phoneNo}
@@ -192,7 +195,6 @@ const Profile = () => {
                       className="rounded-xl h-11" style={fieldStyle("phoneNo")} />
                   </div>
 
-                  {/* Address */}
                   <div>
                     <label className={labelClass("address")}><MapPin className="w-3 h-3" />Address</label>
                     <Input name="address" placeholder="House no, Street, Area" value={updateUser.address}
@@ -200,8 +202,7 @@ const Profile = () => {
                       className="rounded-xl h-11" style={fieldStyle("address")} />
                   </div>
 
-                  {/* City + Zip */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass("city")}><Building2 className="w-3 h-3" />City</label>
                       <Input name="city" placeholder="Mumbai" value={updateUser.city}
