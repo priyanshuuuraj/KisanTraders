@@ -181,7 +181,7 @@ const Cart = () => {
                                 </span>
                             </div>
                             <div className="flex justify-between" style={{ color: "#6b6b6b" }}>
-                                <span>Tax (5%)</span>
+                                <span>Tax (18%)</span>
                                 <span style={{ color: "#2d2d2d", fontWeight: 600 }}>₹{tax.toFixed(2)}</span>
                             </div>
                         </div>
