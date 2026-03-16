@@ -62,7 +62,7 @@ const MyOrder = () => {
     )
 
     return (
-        <div className="px-2 sm:px-4 py-15 space-y-4">
+        <div className="px-2 sm:px-4 py-20 space-y-4">
 
             {/* Header */}
             <div className="flex items-center justify-between mb-1">
