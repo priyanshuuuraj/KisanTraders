@@ -62,7 +62,7 @@ const MyOrder = () => {
     )
 
     return (
-        <div className="px-2 sm:px-4 py-4 space-y-4">
+        <div className="px-2 sm:px-4 py-15 space-y-4">
 
             {/* Header */}
             <div className="flex items-center justify-between mb-1">
@@ -90,7 +90,7 @@ const MyOrder = () => {
                         style={{ border: "1px solid rgba(143,185,122,0.2)", background: "#fff" }}>
 
                         {/* Order Header */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 px-8 md:px-5 py-20"
+                        <div className="flex flex-wrap items-center justify-between gap-2 px-8 md:px-5 py-4"
                             style={{ background: "#faf7f2", borderBottom: "1px solid rgba(143,185,122,0.12)" }}>
                             <div className="flex flex-wrap items-center gap-2 md:gap-4">
                                 <div className="flex items-center gap-1.5 text-xs font-mono" style={{ color: "#9a8a7a" }}>
